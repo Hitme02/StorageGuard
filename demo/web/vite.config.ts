@@ -1,0 +1,9 @@
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+// The Python server (demo/server.py) serves the API on 8765; in development Vite proxies to it.
+export default defineConfig({
+  plugins: [react()],
+  server: { port: 5173, proxy: { '/api': 'http://127.0.0.1:8765' } },
+  build: { outDir: 'dist', chunkSizeWarningLimit: 1200 },
+})

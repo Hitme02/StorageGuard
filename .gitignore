@@ -1,0 +1,48 @@
+# --- Python, tools, caches ---------------------------------------------------------------------------------
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.hypothesis/
+.coverage
+htmlcov/
+.ipynb_checkpoints/
+# local LLM response cache (cache.db)
+.cache/
+
+# --- OS and editors ------------------------------------------------------------------------------------------
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# --- Secrets: API keys are read from environment variables, never from files in the repo ---------------------
+.env
+.env.*
+
+# --- Generated: Colab bundle, downloaded result archives, per-machine config ---------------------------------
+dist/
+archive/
+*.zip
+configs/models_colab.yaml
+
+# --- Raw experiment outputs (large; every summary, CSV and report under results/ is kept) ----------------------
+results/runs/
+results/physical/runs/
+results/zfs/runs/
+results/pilot_mac/
+results/server_logs/
+
+# --- Paper sources stay local. Kept: the generated figures (results/*/REPORT.md embeds them) and the bibliography
+#     (docs/GROUNDING.md cites its sources by BibTeX key). ---------------------------------------------------------
+paper/*
+!paper/figures/
+!paper/references.bib
+
+# --- Presentation frontend -------------------------------------------------------------------------------------
+demo/web/node_modules/
+demo/web/dist/

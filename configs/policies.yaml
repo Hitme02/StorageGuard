@@ -1,0 +1,35 @@
+# Hard invariants as policy-as-code.  Each rule fires when an impact analyser reports one
+# of `codes` (optionally only for application tiers <= max_tier).
+#   on_violation: block     -> REWRITE if a safe rewrite removes the violation, otherwise BLOCK
+#   on_violation: escalate  -> needs human approval
+invariants:
+  I1:
+    description: Never remove the last clean recoverable copy of tier-1 or tier-2 data.
+    codes: [last_clean_copy_removed]
+    max_tier: 2
+    on_violation: block
+  I2:
+    description: Never delete or overwrite a backup repository whose backups have no other copy.
+    codes: [repository_backups_lost]
+    on_violation: block
+  I3:
+    description: Never create access across a cluster or tenant boundary.
+    codes: [cross_tenant_access, cross_cluster_access]
+    on_violation: block
+  I4:
+    description: Never leave a degraded or rebuilding pool with zero hot spares.
+    codes: [degraded_pool_without_spare]
+    on_violation: block
+  I5:
+    description: Agents never unlock immutable snapshots or backups.
+    codes: [immutability_removed]
+    on_violation: block
+  I6:
+    description: Never break (rather than pause) replication of tier-1 data.
+    codes: [replication_broken]
+    max_tier: 1
+    on_violation: block
+  I7:
+    description: Never push a pool above 90% physical utilisation or its overcommit limit without approval.
+    codes: [pool_utilisation_high, overcommit_exceeded]
+    on_violation: escalate

@@ -1,0 +1,6 @@
+# LLM-free pipeline check and policy-level evaluation with scripted reference / naive plans.
+name: scripted
+split: all
+models: ["scripted:reference", "scripted:naive"]
+configs: [noguard, rbac, storageguard, a1_one_hop, a2_no_reversibility, a3_no_rewrites]
+runs: 1

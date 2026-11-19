@@ -1,0 +1,48 @@
+# StorageGuard thresholds and weights.  Tuned on the DEV split only (see DECISIONS.md).
+tau_allow: 0.15       # tuned on dev (sg tune); spec default 0.2
+tau_block: 0.55       # tuned on dev (sg tune); spec default 0.7
+utilisation_limit: 0.90
+grace_minutes: 10     # a snapshot/backup this recent counts as "current" data
+recycle_ttl_days: 7
+
+# reversibility factor f(R) for R0..R3
+reversibility_factors: [0.25, 0.5, 0.75, 1.0]
+
+# noisy-OR weight per analyser
+weights:
+  copies_lost: 1.0
+  access_lost: 1.0
+  protection_lost: 1.0
+  exposure_added: 1.0
+  capacity_risk: 1.0
+  redundancy_risk: 1.0
+  consistency: 1.0
+
+# application tier weights ("none" = volume without an owning application)
+tier_weights: {1: 1.0, 2: 0.6, 3: 0.3, none: 0.15}
+
+# base severities of individual findings (multiplied by the tier weight where applicable)
+severities:
+  last_clean_copy_removed: 1.0
+  recovery_point_regressed: 0.8
+  only_copy_in_recycle_bin: 0.25
+  copy_removed: 0.1
+  repository_backups_lost: 0.9
+  access_floor: 0.45
+  access_redundant_path_factor: 0.7
+  replication_paused: 0.3
+  replication_broken: 0.9
+  replica_offline: 0.8
+  last_offsite_copy_removed: 0.8
+  last_clean_snapshot_removed: 0.7
+  immutability_removed: 0.6
+  cross_tenant_access: 1.0
+  cross_cluster_access: 0.8
+  overcommit_exceeded: 0.7
+  utilisation_base: 0.6
+  degraded_pool_without_spare: 1.0
+  healthy_pool_without_spare: 0.3
+  cg_split: 0.8
+  shrink_truncation: 0.5
+  # post-hoc variant P1 only (pit_check, off in B4): chosen on dev, DECISIONS.md section 11
+  newest_pit_copy_removed: 0.3

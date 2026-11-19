@@ -1,0 +1,45 @@
+{
+ "vm": {
+  "name": "sg-zfs",
+  "status": "Running",
+  "vmType": "vz",
+  "cpus": 4,
+  "memory": 4294967296,
+  "disk": 32212254720
+ },
+ "lima": "limactl version 2.3.0",
+ "plain": true,
+ "host_mounts": 0,
+ "zfs": [
+  "zfs-2.2.2-0ubuntu9.5",
+  "zfs-kmod-2.2.2-0ubuntu9.5"
+ ],
+ "kernel": "6.8.0-147-generic",
+ "os": "Ubuntu 24.04.5 LTS",
+ "mount_types": [
+  "autofs",
+  "binfmt_misc",
+  "bpf",
+  "cgroup2",
+  "configfs",
+  "debugfs",
+  "devpts",
+  "devtmpfs",
+  "efivarfs",
+  "ext4",
+  "fusectl",
+  "hugetlbfs",
+  "iso9660",
+  "mqueue",
+  "proc",
+  "pstore",
+  "securityfs",
+  "sysfs",
+  "tmpfs",
+  "tracefs",
+  "vfat"
+ ],
+ "host_paths_visible": false,
+ "vdev_dir": "/var/lib/sgzfs/s-22570fe6/vdev",
+ "cpus": 4
+}

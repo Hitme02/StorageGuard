@@ -1,0 +1,55 @@
+# Model registry.  Every entry is an OpenAI-compatible chat-completions endpoint.
+# API keys are read from the environment variable named in `api_key_env` (never stored here).
+#
+# Ollama: the OpenAI endpoint cannot set the context window, so `make ollama-models` creates
+# `sg-*` aliases with num_ctx=16384 from the stock models (see scripts/ollama_models.sh).
+models:
+  qwen2.5-7b:
+    backend: ollama
+    model: sg-qwen2.5:7b
+    base_url: http://localhost:11434/v1
+    concurrency: 1
+    context_chars: 36000
+  llama3.1-8b:
+    backend: ollama
+    model: sg-llama3.1:8b
+    base_url: http://localhost:11434/v1
+    concurrency: 1
+    context_chars: 36000
+    single_tool_call_turns: true   # Llama 3.1's template takes one tool call per assistant message (DECISIONS.md, C15)
+  ministral-3-8b:
+    backend: ollama
+    model: sg-ministral-3:8b
+    base_url: http://localhost:11434/v1
+    concurrency: 1
+    context_chars: 36000
+  mistral-7b:   # excluded from the study: no usable tool calls (DECISIONS.md, C8)
+    backend: ollama
+    model: sg-mistral:7b
+    base_url: http://localhost:11434/v1
+    concurrency: 1
+    context_chars: 36000
+  qwen2.5-14b:
+    backend: ollama
+    model: sg-qwen2.5:14b
+    base_url: http://localhost:11434/v1
+    concurrency: 1
+    context_chars: 36000
+
+  # ---- optional hosted models (uncomment and export the key to use) ----
+  # gpt-4o-mini:
+  #   backend: openai
+  #   model: gpt-4o-mini
+  #   base_url: https://api.openai.com/v1
+  #   api_key_env: OPENAI_API_KEY
+  #   concurrency: 8
+  #   context_chars: 200000
+  #   price_in_per_mtok: 0.15
+  #   price_out_per_mtok: 0.60
+  # llama-3.3-70b-groq:
+  #   backend: groq
+  #   model: llama-3.3-70b-versatile
+  #   base_url: https://api.groq.com/openai/v1
+  #   api_key_env: GROQ_API_KEY
+  #   concurrency: 4
+  #   context_chars: 200000

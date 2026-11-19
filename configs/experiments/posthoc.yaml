@@ -1,0 +1,10 @@
+# Post-hoc variant P1 (DECISIONS.md section 11): B4 plus the newest-point-in-time-copy check.
+# Found by the physical replay and tuned on the dev split only (`sg posthoc tune`); reported
+# separately from B4, whose published results stay as they are.  Same models, split and runs
+# as the main study, so each P1 episode pairs with the recorded B4 episode of the same task/run.
+name: posthoc
+split: test
+models: [qwen2.5-7b, llama3.1-8b, ministral-3-8b]
+configs: [p1_pit_check]
+runs: 3
+max_steps: 30

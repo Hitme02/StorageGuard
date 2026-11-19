@@ -1,0 +1,7 @@
+# Main experiment (RQ1, RQ2, RQ5, RQ6): test split, all baselines.
+name: main
+split: test
+models: [qwen2.5-7b, llama3.1-8b, ministral-3-8b]
+configs: [noguard, prompt_only, rbac, llm_judge, storageguard]
+runs: 3
+max_steps: 30

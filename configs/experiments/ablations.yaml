@@ -1,0 +1,19 @@
+# Ablations (RQ3, RQ4) and the threshold sweep (A5), test split, primary model, one run each.
+name: ablations
+split: test
+models: [qwen2.5-7b]
+configs:
+  - a1_one_hop
+  - a2_no_reversibility
+  - a3_no_rewrites
+  - a4_no_feedback
+  - storageguard@human=none
+  - rbac@human=none
+  - storageguard@human=rubber_stamp
+  - rbac@human=rubber_stamp
+  - storageguard@tau_allow=0.05,tau_block=0.4
+  - storageguard@tau_allow=0.1,tau_block=0.55
+  - storageguard@tau_allow=0.35,tau_block=0.85
+  - storageguard@tau_allow=0.5,tau_block=0.95
+runs: 1
+max_steps: 30

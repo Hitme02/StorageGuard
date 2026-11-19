@@ -1,0 +1,7 @@
+# P5 smoke test: one local model on 10 dev tasks.
+name: smoke
+split: dev
+limit: 10
+models: [qwen2.5-7b]
+configs: [noguard, storageguard]
+runs: 1
