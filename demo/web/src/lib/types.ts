@@ -197,3 +197,52 @@ export interface Manifest {
   tau_allow: number[]
   tau_block: number[]
 }
+
+// ---- one ticket replayed on OpenZFS (demo/export_zfs.py) ----
+export interface ZfsRow {
+  id: string
+  kind: 'zpool' | 'folder' | 'volume' | 'snap' | 'backup'
+  parent: string | null
+  label: string
+  zfs?: string
+  sub?: string
+  title?: string
+  gb?: number | null
+  src?: string
+  hideEmpty?: boolean
+  locked?: boolean
+}
+export interface ZfsCmd { cmd: string; tool: string; native: string; twinOk: boolean; said: string; followed: string }
+export interface ZfsStep {
+  tool: string
+  args: Record<string, unknown>
+  decision: Decision | null
+  status: string
+  reasons: string[]
+  human?: string | null
+  cmds: ZfsCmd[]
+  destroyed: string[]
+  created: ZfsRow[]
+  moved: { id: string; parent: string; zfs: string }[]
+  rolled: { id: string; to: string }[]
+}
+export interface ZfsOutcome {
+  lostGb: number
+  lost: { id: string; name: string; gb: number | null }[]
+  rolled: { id: string; name: string; minutes: number | null }[]
+  site: { id: string; name: string; minutes: number | null }[]
+  outage: { id: string; name: string }[]
+  unsafe: boolean
+  success: boolean
+  files: [number, number]
+  identical: boolean
+}
+export interface ZfsRun { steps: ZfsStep[]; outcome: ZfsOutcome; names: Record<string, string>; vols: string[] }
+export interface ZfsTicket {
+  task: { id: string; short: string; text: string; trap: string }
+  tree: ZfsRow[]
+  totals: { volumes: number; snapshots: number; backups: number }
+  names: Record<string, string>
+  runs: Record<string, ZfsRun>
+  zfs: string[]
+}

@@ -5,6 +5,8 @@ import { useBackend } from '../lib/api'
 import { Bench } from './screens/bench'
 import { Copy, Decide } from './screens/idea'
 import { Play } from './screens/play'
+import { Title } from './screens/title'
+import { OnZfs } from './screens/zfs'
 import { Lens, Links, Ticket } from './screens/problem'
 import { End, Real } from './screens/reality'
 import { Hundred, Scale, Versus } from './screens/results'
@@ -23,6 +25,7 @@ interface Def {
 }
 
 const SCREENS: Def[] = [
+  { id: 'start', chapter: -1, steps: [], cta: 'Start with the problem', C: Title },
   { id: 'ticket', chapter: 0, steps: ['Let the agent work', 'Show what arch-fad9 was', 'How often does this happen?'], cta: 'See how storage is linked', C: Ticket },
   { id: 'linked', chapter: 0, steps: ['Add snapshots', 'Add a clone', 'Add a replica and a backup', 'Delete the volume'], cta: 'Why today’s checks miss it', C: Links },
   { id: 'checks', chapter: 0, steps: ['Prompt rules', 'An AI checker', 'What we need'], cta: 'Our idea', C: Lens },
@@ -33,6 +36,7 @@ const SCREENS: Def[] = [
   { id: 'hundred', chapter: 4, steps: ['Turn StorageGuard on', 'All three models'], cta: 'Compare with other checks', C: Hundred },
   { id: 'versus', chapter: 4, steps: ['Add the other checks', 'Add StorageGuard'], cta: 'Do bigger models fix it?', C: Versus },
   { id: 'scale', chapter: 4, steps: ['Add StorageGuard'], cta: 'Did it really happen?', C: Scale },
+  { id: 'zfs', chapter: 5, steps: ['Run both on OpenZFS'], cta: 'Every run, on real storage', C: OnZfs },
   { id: 'real', chapter: 5, steps: ['Real storage software', 'Data destroyed'], cta: 'Wrap up', C: Real },
   { id: 'end', chapter: 6, steps: ['What StorageGuard changed', 'Was it real?', 'Questions'], cta: '', C: End },
 ]
@@ -102,6 +106,7 @@ export default function Deck() {
       if (k === 'ArrowRight' || k === 'PageDown' || (k === ' ' && el?.tagName !== 'BUTTON')) { e.preventDefault(); next() }
       else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); prev() }
       else if (k === 'f' || k === 'F') { if (!document.fullscreenElement) document.documentElement.requestFullscreen?.(); else document.exitFullscreen?.() }
+      else if (k === '0' || k === 'Home') go(0, 0)
       else if (/^[1-6]$/.test(k)) { const i = SCREENS.findIndex((x) => x.chapter === Number(k) - 1); if (i >= 0) go(i, 0) }
     }
     window.addEventListener('keydown', onKey)
@@ -117,7 +122,7 @@ export default function Deck() {
       <div className="d-viewport">
         <div className="d-stage" style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
           <header className="d-top">
-            <div className="d-brand"><Mark />StorageGuard</div>
+            <div className={`d-brand${s.chapter < 0 ? ' away' : ''}`}><Mark />StorageGuard</div>
             <nav className="d-steps" aria-label="Chapters">
               {CHAPTERS.map((c, i) => (
                 <div key={c} style={{ display: 'flex', alignItems: 'center' }}>

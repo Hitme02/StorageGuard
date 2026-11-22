@@ -1,6 +1,6 @@
 # StorageGuard presentation
 
-A minimal deck for a 15-minute talk to evaluators: 12 screens in 6 chapters. Each screen has one short
+A minimal deck for a 15-minute talk to evaluators: a landing screen, then 13 screens in 6 chapters. Each screen has one short
 headline, one animated picture and at most one big number, and the button at the bottom right says what
 happens next. It runs on the real guard when the backend is up, and falls back to recorded data when it
 is not.
@@ -40,15 +40,17 @@ The backend never calls a language model. Live runs use the scripted careless an
 | `→`, `Space`, `Page Down` | next: steps through a screen's reveals first, then moves on (the button names the next step) |
 | `←`, `Page Up` | back |
 | `1` to `6` | jump to a chapter |
+| `0`, `Home` | back to the landing screen |
 | `F` | fullscreen |
 
 Each screen has its own URL (`#/checks/2` is the third reveal of "Today's checks"), so a bookmark can
 take you back to any point.
 
-## The 12 screens
+## The screens
 
 | Chapter | Screen (URL) | Reveals | What it shows |
 |---|---|---|---|
+| | `start` | 1 | landing: the logo animates in, with the one-line pitch and the team |
 | Problem | `ticket` | 4 | the ticket; the agent deletes three "idle" volumes; one was the live copy of a tier-1 database; 40–53% |
 | | `linked` | 5 | storage in one picture (volume, snapshots, clone, replica, backup), then the blast radius |
 | | `checks` | 4 | a spotlight shows how far prompt rules and an AI checker can see, then everything |
@@ -59,7 +61,8 @@ take you back to any point.
 | Results | `hundred` | 3 | 100 dots: harm and finished tickets, no guard against StorageGuard, per model |
 | | `versus` | 3 | harm against human asks for all five methods |
 | | `scale` | 2 | 7B to 72B: no guard stays at 41–51%, StorageGuard at 0–1% |
-| Reality check | `real` | 3 | 866 of 866 on real files, 95.7% on OpenZFS, 0 TB against 104.9 TB destroyed |
+| Reality check | `zfs` | 2 | one ticket replayed on OpenZFS: pick the AI and the ticket, two safety methods side by side; the storage before, every `zfs` command, what ZFS destroyed, and what was lost |
+| | `real` | 3 | 866 of 866 on real files, 95.7% on OpenZFS, 0 TB against 104.9 TB destroyed |
 | | `end` | 4 | three things to remember, then questions |
 
 ## Refresh the recorded data
@@ -70,6 +73,7 @@ the real-file sandbox for the showcase tickets:
 ```sh
 make present-data                         # everything
 venv/bin/python demo/export.py --results-only   # only results.json and tasks.json (seconds)
+venv/bin/python demo/export_zfs.py              # only the OpenZFS screen (seconds)
 ```
 
 Every number in the deck comes from `results/REPORT.md`, `results/aggregates.csv` or a run. The one
@@ -90,6 +94,7 @@ npm run shots -- <out-dir>    # the same for the classic deck
 | `demo/engine.py` | backend logic: task list, live runs through the middleware, replay, maps, threshold sweep |
 | `demo/server.py` | standard-library HTTP server: `/api/*` plus the built frontend |
 | `demo/export.py` | writes `demo/web/public/data/` |
+| `demo/export_zfs.py` | writes `demo/web/public/data/zfs/` for the OpenZFS screen, from the recorded replay in `results/zfs` (no VM needed); `export.py` runs it too |
 | `demo/web/src/deck/` | the minimal deck: `Deck.tsx` (shell and screen list), `Graph.tsx` (the animated storage map), `screens/` (one file per chapter) |
 | `demo/web/src/slides/`, `components/`, `content/`, `app/` | the classic deck (`?classic`) |
 | `demo/web/src/lib/` | data layer and plain-English wording, shared by both decks |

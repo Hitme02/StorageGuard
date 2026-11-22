@@ -111,6 +111,10 @@ function compactKnobs(k: Knobs): Knobs {
 }
 
 // ---- endpoints ----
+/** One ticket replayed on OpenZFS under every model and method (recorded only: demo/export_zfs.py). */
+export const fetchZfs = (task: string) => getStatic<import('./types').ZfsTicket>(`zfs/${task}.json`)
+export const fetchZfsIndex = () => getStatic<{ id: string; short: string }[]>('zfs/index.json')
+
 export function fetchLiveRun(task: string, agent: 'scripted:naive' | 'scripted:reference', config: string, knobs: Knobs = {}, physical = false) {
   const k = compactKnobs(knobs)
   const suffix = knobSuffix(k)

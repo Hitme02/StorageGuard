@@ -7,8 +7,8 @@ const base = process.argv[3] || 'http://127.0.0.1:8765'
 const only = process.argv.slice(4)
 mkdirSync(out, { recursive: true })
 const SHOTS = [
-  ['ticket', [0, 1, 2, 3]], ['linked', [0, 3, 4]], ['checks', [0, 1, 2, 3]], ['copy', [0, 1, 2]], ['decide', [0, 1, 2]],
-  ['tickets', [0, 1]], ['play', [0]], ['hundred', [0, 1, 2]], ['versus', [0, 1, 2]], ['scale', [0, 1]], ['real', [0, 1, 2]], ['end', [3]],
+  ['start', [0]], ['ticket', [0, 1, 2, 3]], ['linked', [0, 3, 4]], ['checks', [0, 1, 2, 3]], ['copy', [0, 1, 2]], ['decide', [0, 1, 2]],
+  ['tickets', [0, 1]], ['play', [0]], ['hundred', [0, 1, 2]], ['versus', [0, 1, 2]], ['scale', [0, 1]], ['zfs', [0, 1]], ['real', [0, 1, 2]], ['end', [3]],
 ]
 const browser = await chromium.launch({ channel: 'chrome', headless: true })
 const page = await browser.newPage({ viewport: { width: 1600, height: 900 }, deviceScaleFactor: 1 })
@@ -20,7 +20,7 @@ for (const [id, builds] of SHOTS) {
   for (const b of builds) {
     await page.goto('about:blank')
     await page.goto(`${base}/#/${id}/${b}`)
-    await page.waitForTimeout(id === 'play' ? 9000 : 4200)
+    await page.waitForTimeout(id === 'play' ? 9000 : id === 'zfs' ? 11000 : 4200)
     await page.screenshot({ path: `${out}/${id}_${b}.png` })
   }
 }
