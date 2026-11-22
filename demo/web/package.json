@@ -7,11 +7,14 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "shots": "node scripts/shots.mjs"
+    "shots": "node scripts/shots.mjs",
+    "deck-shots": "node scripts/deck-shots.mjs"
   },
   "dependencies": {
     "@fontsource/barlow": "5.1.0",
     "@fontsource/barlow-condensed": "5.1.0",
+    "@fontsource/ibm-plex-mono": "5.1.0",
+    "@fontsource/ibm-plex-sans": "5.1.0",
     "@fontsource/jetbrains-mono": "5.1.1",
     "d3-force": "3.0.0",
     "framer-motion": "11.11.17",

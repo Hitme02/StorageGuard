@@ -58,7 +58,9 @@ async function callApi<T>(path: string, body?: unknown): Promise<T> {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
   })
-  const data = await r.json().catch(() => ({ error: `HTTP ${r.status}` }))
+  // a reply that is not JSON means no backend is answering (a static server or a dead proxy): use the recordings
+  const data = await r.json().catch(() => null)
+  if (data === null) throw new TypeError(`HTTP ${r.status}: no backend`)
   if (!r.ok) throw new Error(data.error || `HTTP ${r.status}`)
   return data as T
 }

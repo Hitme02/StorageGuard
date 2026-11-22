@@ -1,8 +1,12 @@
-# StorageGuard control room
+# StorageGuard presentation
 
-A presentation of the project as a dark "control room" console: 20 screens in 7 chapters, built
-for a 15-minute talk to evaluators. It runs on the real guard when the backend is up, and falls back
-to recorded data when it is not.
+A minimal deck for a 15-minute talk to evaluators: 12 screens in 6 chapters. Each screen has one short
+headline, one animated picture and at most one big number, and the button at the bottom right says what
+happens next. It runs on the real guard when the backend is up, and falls back to recorded data when it
+is not.
+
+The earlier 20-screen "control room" deck is still there: open the same address with `?classic`
+(for example `http://127.0.0.1:8765/?classic`). Its keys and notes are unchanged.
 
 ## Run it
 
@@ -17,54 +21,46 @@ Open the page, press `F` for fullscreen and use the arrow keys.
 
 The light at the top right shows which mode the deck is in:
 
-- **Live backend**: every ticket (all 150), every safety method and every guard setting is computed
-  on the spot by the real middleware. Real-file runs (screen 4.2) happen in a fresh temporary
-  `sg-sandbox-*` folder that is deleted afterwards.
-- **Recorded data**: the server is not reachable. The deck uses `demo/web/public/data/`: 18 showcase
-  tickets (one or more per trap), the three main models' recorded runs, the full threshold grid, and
-  every chart. Tickets that need the backend are greyed out in the control room.
+- **Live**: the playground ("Try it") runs every ticket and every guard setting through the real
+  middleware on the spot.
+- **Recorded**: the server is not reachable. The deck uses `demo/web/public/data/`. Every screen works;
+  in the playground the eight listed tickets, all safety methods and the three main models replay from
+  the recordings, and changing the guard settings needs the backend.
 
-To present without Python, serve `demo/web/dist` with any static server (for example
-`cd demo/web && npx vite preview`). The deck then runs in recorded mode.
+To present without Python, serve `demo/web/dist` with any static server. The deck then runs in
+recorded mode.
 
-The backend never calls a language model. Live runs use the scripted careless and correct plans, and
+The backend never calls a language model. Live runs use the scripted careless and careful plans, and
 "Real AI" replays recorded episodes from `results/runs/`.
 
 ## Presenter keys
 
 | Key | Does |
 |---|---|
-| `→`, `Space`, `Page Down` / `←`, `Page Up` | next / previous; steps through a screen's reveals first (clicker remotes send Page Down/Up) |
-| `Esc` | close the overview or glossary |
-| `1` to `7` | jump to a chapter |
-| `C` | core path on/off: skips the 5 detour screens (on by default) |
-| `O` | overview of all screens |
-| `G` | glossary: every term introduced so far, in plain words |
-| `E` | engineer view: file paths, formulas and API calls under each screen |
-| `H` | high contrast, for washed-out projectors |
+| `→`, `Space`, `Page Down` | next: steps through a screen's reveals first, then moves on (the button names the next step) |
+| `←`, `Page Up` | back |
+| `1` to `6` | jump to a chapter |
 | `F` | fullscreen |
 
-Click the timer to reset it. Each screen has its own URL (`#/3.2/4` is screen 3.2, reveal 4), so a
-browser bookmark can take you back to any point.
+Each screen has its own URL (`#/checks/2` is the third reveal of "Today's checks"), so a bookmark can
+take you back to any point.
 
-## 15-minute plan (core path)
+## The 12 screens
 
-The full script, with what to say at every reveal, the demo steps and likely questions, is in
-[`SPEAKER_NOTES.md`](SPEAKER_NOTES.md).
-
-| Chapter | Screens | Time |
-|---|---|---|
-| 1. The problem | 1.1 one ticket, 1.2 incidents, 1.3 storage in 60 s, 1.5 hidden links, 1.6 why current methods miss it | 4:00 |
-| 2. The benchmark | 2.1 the pretend company, 2.2 150 tickets and 12 traps | 1:30 |
-| 3. How it works | 3.1 try it on a copy, 3.2 the six-step pipeline, 3.3 four answers | 3:00 |
-| 4. Try it | 4.1 control room (live) | 2:00 |
-| 5. Results | 5.1 out of 100 tickets, 5.2 against the alternatives | 2:15 |
-| 6. Reality check | 6.1 real files and OpenZFS | 1:15 |
-| 7. Wrap-up | 7 three things to remember | 1:00 |
-
-Detours for questions: 1.4 meet the AI admin, 2.3 how harm is judged, 4.2 the same plan on real
-files, 5.3 deep dives (ablations, model size, planted instructions, explanations, speed, trap by
-trap), 6.2 what running it for real taught us.
+| Chapter | Screen (URL) | Reveals | What it shows |
+|---|---|---|---|
+| Problem | `ticket` | 4 | the ticket; the agent deletes three "idle" volumes; one was the live copy of a tier-1 database; 40–53% |
+| | `linked` | 5 | storage in one picture (volume, snapshots, clone, replica, backup), then the blast radius |
+| | `checks` | 4 | a spotlight shows how far prompt rules and an AI checker can see, then everything |
+| Idea | `copy` | 3 | the guard sits between agent and storage, rehearses the call on a copy, answers with a reason |
+| | `decide` | 3 | six checks, then the risk scale with the four answers from real decisions |
+| Test bed | `tickets` | 2 | 150 tickets sort into routine, unclear, 65 traps and 15 planted instructions |
+| Try it | `play` | 1 | the playground: ticket, who works it, safety method, guard settings |
+| Results | `hundred` | 3 | 100 dots: harm and finished tickets, no guard against StorageGuard, per model |
+| | `versus` | 3 | harm against human asks for all five methods |
+| | `scale` | 2 | 7B to 72B: no guard stays at 41–51%, StorageGuard at 0–1% |
+| Reality check | `real` | 3 | 866 of 866 on real files, 95.7% on OpenZFS, 0 TB against 104.9 TB destroyed |
+| | `end` | 4 | three things to remember, then questions |
 
 ## Refresh the recorded data
 
@@ -76,15 +72,17 @@ make present-data                         # everything
 venv/bin/python demo/export.py --results-only   # only results.json and tasks.json (seconds)
 ```
 
-Every number in the deck comes from `results/REPORT.md`, `results/aggregates.csv` or a run. None
-is typed into the frontend.
+Every number in the deck comes from `results/REPORT.md`, `results/aggregates.csv` or a run. The one
+exception is the 866-of-866 agreement count, copied from `results/physical/REPORT.md` into
+`web/src/deck/screens/reality.tsx`.
 
 ## Develop
 
 ```sh
 make present                  # backend on :8765
 cd demo/web && npm run dev    # Vite on :5173, proxies /api to :8765
-npm run shots -- <out-dir>    # screenshot every screen at 1600x900 (uses the installed Chrome)
+npm run deck-shots -- <out-dir> http://localhost:5173   # screenshot every screen and reveal at 1600x900 (installed Chrome)
+npm run shots -- <out-dir>    # the same for the classic deck
 ```
 
 | Path | What |
@@ -92,6 +90,6 @@ npm run shots -- <out-dir>    # screenshot every screen at 1600x900 (uses the in
 | `demo/engine.py` | backend logic: task list, live runs through the middleware, replay, maps, threshold sweep |
 | `demo/server.py` | standard-library HTTP server: `/api/*` plus the built frontend |
 | `demo/export.py` | writes `demo/web/public/data/` |
-| `demo/web/src/slides/` | one file per chapter |
-| `demo/web/src/components/` | storage map, step-by-step run view, charts, shared UI |
-| `demo/web/src/content/` | glossary and the trap and incident texts |
+| `demo/web/src/deck/` | the minimal deck: `Deck.tsx` (shell and screen list), `Graph.tsx` (the animated storage map), `screens/` (one file per chapter) |
+| `demo/web/src/slides/`, `components/`, `content/`, `app/` | the classic deck (`?classic`) |
+| `demo/web/src/lib/` | data layer and plain-English wording, shared by both decks |

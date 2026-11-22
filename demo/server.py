@@ -44,7 +44,8 @@ class Handler(BaseHTTPRequestHandler):
         self.send_response(code)
         self.send_header("Content-Type", ctype)
         self.send_header("Content-Length", str(len(body)))
-        self.send_header("Cache-Control", "no-store" if ctype.startswith("application/json") else "max-age=3600")
+        # no-cache, not max-age: Vite can keep the entry file's name across builds, so a cached copy would run an old deck.
+        self.send_header("Cache-Control", "no-store" if ctype.startswith("application/json") else "no-cache")
         self.end_headers()
         self.wfile.write(body)
 
