@@ -2,6 +2,15 @@
 
 Research prototype for **"StorageGuard: Blast-Radius-Aware Guardrails for LLM Agents that Administer Enterprise Storage"**.
 
+---
+## Demo (Screen Recording)
+
+<p align="center">
+  <video src="https://github.com/user-attachments/assets/be7abd67-54da-45d6-861d-c648c2f7e510" width="80%" controls></video>
+</p>
+
+---
+
 Everything is software-only. Nothing here talks to a real array or a cloud account; the only network calls go to the LLM endpoints you list in `configs/models.yaml`.
 
 ```
